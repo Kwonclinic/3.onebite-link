@@ -1,66 +1,75 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <div className="flex flex-1 flex-col bg-[var(--background)] font-sans">
+      <header className="sticky top-0 z-10 flex h-12 items-center border-b border-[var(--border)] bg-[var(--background)]/80 px-4 backdrop-blur-sm">
+        <span className="text-base font-semibold text-[var(--text)]">
+          onebite-link
+        </span>
+      </header>
+
+      <main className="mx-auto flex w-full max-w-[720px] flex-1 flex-col gap-8 px-6 pt-10 pb-20">
+        <div className="flex flex-col gap-4">
+          <h1 className="text-[30px] leading-[1.2] font-bold text-[var(--text)]">
+            링크를 한입에, onebite-link
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-base leading-[1.6] text-[var(--text-sub)]">
+            길고 복잡한 링크를 짧고 깔끔하게. 필요한 순간에 바로 꺼내 쓰는
+            링크 모음을 만들어보세요.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+
+        <div className="card-hover flex flex-col gap-4 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-4">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-xl leading-[1.3] font-semibold text-[var(--text)]">
+              지금 바로 시작하기
+            </h2>
+            <p className="text-sm leading-[1.4] text-[var(--text-sub)]">
+              계정 없이도 링크를 만들고 바로 공유할 수 있어요.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <input
+              type="url"
+              placeholder="https://example.com/very/long/link"
+              className="h-10 flex-1 rounded-md border border-[var(--border)] bg-[var(--surface)] px-3 text-base text-[var(--text)] placeholder:text-[var(--placeholder)] outline-none focus:border-[var(--accent)]"
             />
-            Deploy Now
-          </a>
+            <button className="btn-primary h-10 rounded-md bg-[var(--accent)] px-4 text-sm font-medium text-white">
+              링크 줄이기
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="inline-flex w-fit items-center rounded-sm bg-[var(--hover-bg)] px-2 py-0.5 text-[13px] text-[var(--text)]">
+            빠르고 간단함
+          </span>
+          <ul className="flex flex-col">
+            {[
+              ["가입 없이 사용", "이메일이나 비밀번호 없이 바로 링크를 만들 수 있어요."],
+              ["클릭 통계 확인", "누가 언제 클릭했는지 한눈에 확인할 수 있어요."],
+              ["원하는 만큼 관리", "만든 링크를 목록으로 모아 편하게 관리하세요."],
+            ].map(([title, desc]) => (
+              <li
+                key={title}
+                className="card-hover flex flex-col gap-0.5 rounded-md border-b border-[var(--border)] px-2 py-3 last:border-b-0"
+              >
+                <span className="text-base font-medium text-[var(--text)]">
+                  {title}
+                </span>
+                <span className="text-sm text-[var(--text-sub)]">{desc}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex flex-col gap-3 sm:flex-row">
           <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://nextjs.org/docs"
             target="_blank"
             rel="noopener noreferrer"
+            className="btn-secondary flex h-10 items-center justify-center rounded-md border border-[var(--border)] px-4 text-sm font-medium text-[var(--text)]"
           >
-            Documentation
+            문서 보기
           </a>
         </div>
       </main>
