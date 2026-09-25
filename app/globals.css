@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f7f5;
+  --background: #f5f5f5;
   --surface: #ffffff;
-  --text: #37352f;
-  --text-sub: #6b6a66;
-  --placeholder: #c4c4c0;
-  --border: #e3e3e0;
-  --accent: #2eaadc;
-  --accent-hover: #2898c4;
-  --hover-bg: #f1f1ef;
-  --error: #eb5757;
-  --success: #4dab9a;
+  --text: #1e1e1e;
+  --text-sub: #888888;
+  --placeholder: #bbbbbb;
+  --border: #eeeeee;
+  --accent: #2ac1bc;
+  --accent-hover: #25ada8;
+  --hover-bg: #e9f9f8;
+  --sub-accent: #ffd600;
+  --error: #f04452;
+  --success: #2ac1bc;
 }
 
 @theme inline {
@@ -32,26 +33,29 @@ body {
 }
 
 a {
-  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card-hover:hover {
+.nav-hover:hover {
   background: var(--hover-bg);
 }
 
+.card-hover {
+  transition: box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 .btn-primary {
-  transition: background-color 0.15s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .btn-primary:hover {
   background: var(--accent-hover);
 }
 
-.btn-secondary {
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.btn-secondary:hover {
-  background: var(--hover-bg);
-  border-color: var(--border);
+.btn-primary:active {
+  transform: scale(0.97);
 }

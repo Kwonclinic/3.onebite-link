@@ -2,13 +2,11 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-10 flex h-12 items-center justify-between border-b border-[var(--border)] bg-[var(--background)]/80 px-4 backdrop-blur-sm">
-      <span className="text-base font-semibold text-[var(--text)]">
-        한입 링크
-      </span>
+    <header className="sticky top-0 z-10 flex h-14 items-center justify-between bg-[var(--surface)] px-5 shadow-[0_1px_0_rgba(0,0,0,0.06)]">
+      <span className="text-xl font-bold text-[var(--text)]">한입 링크</span>
       <Link
         href="/new"
-        className="btn-primary flex h-8 items-center rounded-md bg-[var(--accent)] px-3 text-sm font-medium text-white"
+        className="btn-primary flex h-9 items-center rounded-xl bg-[var(--accent)] px-4 text-sm font-bold text-white"
       >
         + Add Link
       </Link>

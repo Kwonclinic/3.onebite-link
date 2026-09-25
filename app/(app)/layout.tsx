@@ -13,7 +13,7 @@ export default function AppLayout({
       <div className="flex flex-1">
         <Sidebar />
 
-        <main className="flex-1 px-6 py-6">{children}</main>
+        <main className="flex-1 px-5 pt-9 pb-8">{children}</main>
       </div>
     </div>
   );
