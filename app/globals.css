@@ -110,3 +110,26 @@ a {
 .folder-row:hover .folder-count {
   opacity: 0;
 }
+
+.link-card-edit-btn,
+.link-card-delete-btn {
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.link-card-row:hover .link-card-edit-btn,
+.link-card-edit-btn:focus-visible,
+.link-card-row:hover .link-card-delete-btn,
+.link-card-delete-btn:focus-visible {
+  opacity: 1;
+}
+
+.link-card-edit-btn:hover {
+  background: var(--hover-bg);
+  color: var(--accent);
+}
+
+.link-card-delete-btn:hover {
+  background: var(--hover-bg);
+  color: var(--error);
+}

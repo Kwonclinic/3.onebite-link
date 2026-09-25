@@ -18,9 +18,17 @@ type NewLinkInput = {
   folderId: string;
 };
 
+type UpdateLinkInput = {
+  folderId: string;
+  title: string;
+  description: string;
+};
+
 type LinkContextValue = {
   links: LinkItem[];
   addLink: (input: NewLinkInput) => LinkItem;
+  removeLink: (id: string) => void;
+  updateLink: (id: string, input: UpdateLinkInput) => void;
 };
 
 const LinkContext = createContext<LinkContextValue | null>(null);
@@ -42,8 +50,32 @@ export function LinkProvider({ children }: { children: ReactNode }) {
     return newLink;
   }, []);
 
+  const removeLink = useCallback((id: string) => {
+    setLinks((prev) => prev.filter((link) => link.id !== id));
+  }, []);
+
+  const updateLink = useCallback((id: string, input: UpdateLinkInput) => {
+    const title = input.title.trim();
+    if (!title || !input.folderId) return;
+
+    setLinks((prev) =>
+      prev.map((link) =>
+        link.id === id
+          ? {
+              ...link,
+              folderId: input.folderId,
+              title,
+              description: input.description.trim(),
+            }
+          : link
+      )
+    );
+  }, []);
+
   return (
-    <LinkContext.Provider value={{ links, addLink }}>
+    <LinkContext.Provider
+      value={{ links, addLink, removeLink, updateLink }}
+    >
       {children}
     </LinkContext.Provider>
   );
