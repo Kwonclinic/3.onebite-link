@@ -11,6 +11,15 @@ export default function LinkCard({ link }: { link: LinkItem }) {
       rel="noopener noreferrer"
       className="card-hover flex flex-col gap-3 rounded-2xl bg-[var(--surface)] p-5 shadow-[0_1px_6px_rgba(0,0,0,0.06)]"
     >
+      {link.thumbnail && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={link.thumbnail}
+          alt=""
+          className="h-32 w-full rounded-xl object-cover"
+        />
+      )}
+
       <div className="flex items-center gap-2">
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[var(--hover-bg)] text-sm font-bold text-[var(--accent)]">
           {link.title.charAt(0).toUpperCase()}

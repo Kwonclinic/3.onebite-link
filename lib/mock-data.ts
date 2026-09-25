@@ -83,7 +83,3 @@ export const links: LinkItem[] = [
 export function getFolderById(folderId: string): Folder | undefined {
   return folders.find((folder) => folder.id === folderId);
 }
-
-export function getLinksByFolder(folderId: string): LinkItem[] {
-  return links.filter((link) => link.folderId === folderId);
-}

@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { FolderProvider } from "@/lib/folder-context";
+import { LinkProvider } from "@/lib/link-context";
 
 export default function AppLayout({
   children,
@@ -9,15 +10,17 @@ export default function AppLayout({
 }) {
   return (
     <FolderProvider>
-      <div className="flex flex-1 flex-col bg-[var(--background)] font-sans">
-        <Header />
+      <LinkProvider>
+        <div className="flex flex-1 flex-col bg-[var(--background)] font-sans">
+          <Header />
 
-        <div className="flex flex-1">
-          <Sidebar />
+          <div className="flex flex-1">
+            <Sidebar />
 
-          <main className="flex-1 px-5 pt-9 pb-8">{children}</main>
+            <main className="flex-1 px-5 pt-9 pb-8">{children}</main>
+          </div>
         </div>
-      </div>
+      </LinkProvider>
     </FolderProvider>
   );
 }
