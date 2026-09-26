@@ -6,19 +6,21 @@ import { usePathname, useRouter } from "next/navigation";
 import DeleteFolderModal from "@/components/DeleteFolderModal";
 import RenameFolderModal from "@/components/RenameFolderModal";
 import { useFolders } from "@/lib/folder-context";
+import { useLinks } from "@/lib/link-context";
 import type { Folder } from "@/lib/types";
 
 export default function Sidebar() {
   const { folders, removeFolder, renameFolder } = useFolders();
+  const { links } = useLinks();
   const pathname = usePathname();
   const router = useRouter();
   const [folderToDelete, setFolderToDelete] = useState<Folder | null>(null);
   const [folderToRename, setFolderToRename] = useState<Folder | null>(null);
 
-  function handleConfirmDelete() {
+  async function handleConfirmDelete() {
     if (!folderToDelete) return;
 
-    removeFolder(folderToDelete.id);
+    await removeFolder(folderToDelete.id);
 
     const activeFolderId = pathname.startsWith("/folder/")
       ? decodeURIComponent(pathname.slice("/folder/".length))
@@ -56,7 +58,7 @@ export default function Sidebar() {
             >
               <span className="truncate">{folder.name}</span>
               <span className="folder-count pr-16 text-[13px] text-[var(--text-sub)] transition-opacity duration-200">
-                {folder.count}
+                {links.filter((link) => link.folderId === folder.id).length}
               </span>
             </Link>
 
@@ -118,8 +120,8 @@ export default function Sidebar() {
         <RenameFolderModal
           initialName={folderToRename.name}
           onClose={() => setFolderToRename(null)}
-          onSave={(name) => {
-            renameFolder(folderToRename.id, name);
+          onSave={async (name) => {
+            await renameFolder(folderToRename.id, name);
             setFolderToRename(null);
           }}
         />

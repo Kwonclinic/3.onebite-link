@@ -7,7 +7,7 @@ import { useFolders } from "@/lib/folder-context";
 
 export default function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { addFolder } = useFolders();
+  const { addFolder, isAddingFolder } = useFolders();
 
   return (
     <header className="sticky top-0 z-10 flex h-14 items-center justify-between bg-[var(--surface)] px-5 shadow-[0_1px_0_rgba(0,0,0,0.06)]">
@@ -17,7 +17,8 @@ export default function Header() {
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
-          className="btn-secondary flex h-9 items-center rounded-xl bg-[var(--hover-bg)] px-4 text-sm font-bold text-[var(--accent)]"
+          disabled={isAddingFolder}
+          className="btn-secondary flex h-9 items-center rounded-xl bg-[var(--hover-bg)] px-4 text-sm font-bold text-[var(--accent)] disabled:opacity-60"
         >
           + New Folder
         </button>
@@ -32,9 +33,10 @@ export default function Header() {
 
       {isModalOpen && (
         <NewFolderModal
+          isSubmitting={isAddingFolder}
           onClose={() => setIsModalOpen(false)}
-          onSave={(name) => {
-            addFolder(name);
+          onSave={async (name) => {
+            await addFolder(name);
             setIsModalOpen(false);
           }}
         />

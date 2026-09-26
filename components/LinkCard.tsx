@@ -109,8 +109,8 @@ export default function LinkCard({ link }: { link: LinkItem }) {
         <DeleteLinkModal
           linkTitle={link.title}
           onClose={() => setIsDeleting(false)}
-          onConfirm={() => {
-            removeLink(link.id);
+          onConfirm={async () => {
+            await removeLink(link.id);
             setIsDeleting(false);
           }}
         />
@@ -120,8 +120,8 @@ export default function LinkCard({ link }: { link: LinkItem }) {
         <EditLinkModal
           link={link}
           onClose={() => setIsEditing(false)}
-          onSave={(input) => {
-            updateLink(link.id, input);
+          onSave={async (input) => {
+            await updateLink(link.id, input);
             setIsEditing(false);
           }}
         />

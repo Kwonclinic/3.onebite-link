@@ -1,10 +1,10 @@
 import type { Folder, LinkItem } from "@/lib/types";
 
 export const folders: Folder[] = [
-  { id: "dev", name: "개발", count: 4 },
-  { id: "design", name: "디자인", count: 2 },
-  { id: "reading", name: "읽을거리", count: 3 },
-  { id: "etc", name: "기타", count: 1 },
+  { id: "dev", name: "개발" },
+  { id: "design", name: "디자인" },
+  { id: "reading", name: "읽을거리" },
+  { id: "etc", name: "기타" },
 ];
 
 export const links: LinkItem[] = [

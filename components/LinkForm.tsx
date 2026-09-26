@@ -11,7 +11,10 @@ export default function LinkForm() {
   const { addLink } = useLinks();
 
   const [url, setUrl] = useState("");
-  const [folderId, setFolderId] = useState(folders[0]?.id ?? "");
+  const [selectedFolderId, setSelectedFolderId] = useState<string | null>(
+    null
+  );
+  const folderId = selectedFolderId ?? folders[0]?.id ?? "";
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,13 +35,17 @@ export default function LinkForm() {
         throw new Error(data.error ?? "링크 정보를 가져오지 못했습니다.");
       }
 
-      addLink({
+      const newLink = await addLink({
         url: data.url,
         title: data.title,
         description: data.description,
         thumbnail: data.thumbnail,
         folderId,
       });
+
+      if (!newLink) {
+        throw new Error("링크를 저장하지 못했습니다.");
+      }
 
       router.push(`/folder/${folderId}`);
     } catch (err) {
@@ -84,7 +91,7 @@ export default function LinkForm() {
         <select
           id="link-folder"
           value={folderId}
-          onChange={(event) => setFolderId(event.target.value)}
+          onChange={(event) => setSelectedFolderId(event.target.value)}
           className="h-12 rounded-[10px] border border-[var(--border)] bg-[var(--surface)] px-3.5 text-base text-[var(--text)] outline-none focus:border-[var(--accent)]"
         >
           {folders.map((folder) => (

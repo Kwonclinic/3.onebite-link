@@ -7,12 +7,13 @@ import { useLinks } from "@/lib/link-context";
 
 export default function FolderPage() {
   const { folderId } = useParams<{ folderId: string }>();
-  const { folders } = useFolders();
+  const { folders, isLoadingFolders } = useFolders();
   const { links } = useLinks();
   const decodedFolderId = decodeURIComponent(folderId);
   const folder = folders.find((item) => item.id === decodedFolderId);
 
   if (!folder) {
+    if (isLoadingFolders) return null;
     notFound();
   }
 

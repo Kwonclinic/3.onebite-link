@@ -4,56 +4,98 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
-import { folders as initialFolders } from "@/lib/mock-data";
+import { createClient } from "@/lib/supabase/client";
 import type { Folder } from "@/lib/types";
 
 type FolderContextValue = {
   folders: Folder[];
-  addFolder: (name: string) => void;
-  removeFolder: (id: string) => void;
-  renameFolder: (id: string, name: string) => void;
+  isLoadingFolders: boolean;
+  isAddingFolder: boolean;
+  addFolder: (name: string) => Promise<void>;
+  removeFolder: (id: string) => Promise<void>;
+  renameFolder: (id: string, name: string) => Promise<void>;
 };
 
 const FolderContext = createContext<FolderContextValue | null>(null);
 
-function slugify(name: string) {
-  return name
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^\p{L}\p{N}-]/gu, "");
-}
-
 export function FolderProvider({ children }: { children: ReactNode }) {
-  const [folders, setFolders] = useState<Folder[]>(initialFolders);
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [isLoadingFolders, setIsLoadingFolders] = useState(true);
+  const [isAddingFolder, setIsAddingFolder] = useState(false);
+  const isAddingRef = useRef(false);
 
-  const addFolder = useCallback((name: string) => {
-    const trimmed = name.trim();
-    if (!trimmed) return;
+  useEffect(() => {
+    const supabase = createClient();
 
-    setFolders((prev) => {
-      const baseSlug = slugify(trimmed) || "folder";
-      let slug = baseSlug;
-      let suffix = 2;
-      while (prev.some((folder) => folder.id === slug)) {
-        slug = `${baseSlug}-${suffix}`;
-        suffix += 1;
-      }
-
-      return [...prev, { id: slug, name: trimmed, count: 0 }];
-    });
+    supabase
+      .from("folders")
+      .select("id, name")
+      .order("created_at", { ascending: true })
+      .then(({ data, error }) => {
+        if (!error && data) {
+          setFolders(
+            data.map((row) => ({
+              id: String(row.id),
+              name: row.name,
+            }))
+          );
+        }
+        setIsLoadingFolders(false);
+      });
   }, []);
 
-  const removeFolder = useCallback((id: string) => {
+  const addFolder = useCallback(async (name: string) => {
+    const trimmed = name.trim();
+    if (!trimmed || isAddingRef.current) return;
+
+    isAddingRef.current = true;
+    setIsAddingFolder(true);
+
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("folders")
+        .insert({ name: trimmed })
+        .select("id, name")
+        .single();
+
+      if (error || !data) return;
+
+      setFolders((prev) => [
+        ...prev,
+        { id: String(data.id), name: data.name },
+      ]);
+    } finally {
+      isAddingRef.current = false;
+      setIsAddingFolder(false);
+    }
+  }, []);
+
+  const removeFolder = useCallback(async (id: string) => {
+    const supabase = createClient();
+    const { error } = await supabase.from("folders").delete().eq("id", id);
+
+    if (error) return;
+
     setFolders((prev) => prev.filter((folder) => folder.id !== id));
   }, []);
 
-  const renameFolder = useCallback((id: string, name: string) => {
+  const renameFolder = useCallback(async (id: string, name: string) => {
     const trimmed = name.trim();
     if (!trimmed) return;
+
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("folders")
+      .update({ name: trimmed })
+      .eq("id", id);
+
+    if (error) return;
 
     setFolders((prev) =>
       prev.map((folder) =>
@@ -64,7 +106,14 @@ export function FolderProvider({ children }: { children: ReactNode }) {
 
   return (
     <FolderContext.Provider
-      value={{ folders, addFolder, removeFolder, renameFolder }}
+      value={{
+        folders,
+        isLoadingFolders,
+        isAddingFolder,
+        addFolder,
+        removeFolder,
+        renameFolder,
+      }}
     >
       {children}
     </FolderContext.Provider>
